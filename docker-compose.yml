@@ -1,63 +1,55 @@
-version: '3.7'
-
+version: '3'
 services:
-
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    environment:
-      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
-      MYSQL_DATABASE: $MYSQLDB_DATABASE
-      MYSQL_USER: $MYSQLDB_USER
-      MYSQL_PASSWORD: $MYSQLDB_PASSWORD
-    ports:
-      - 3306:3306
-    volumes:
-      - ./mysql:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/schema.sql:ro
-    networks:
-      - mysql-network
-
-  api:
-    build: 
-      context: .
-      dockerfile: Dockerfile.api
-    container_name: api
-    working_dir: /api
-    command: node index.js
-    environment:
-        - DB_HOST=mysql://mysql:3306 
-        - DB_PORT=3036
-        - DB_PASSWORD=password
-        - DB_USER=username
-        - DB_DATABASE=test
-    ports:
-      - 3001:3001
-    networks:
-      - mysql-network
-    depends_on:
-      - mysql
-
   app:
     build: 
-      context: .
       dockerfile: Dockerfile.app
-    container_name: app
     working_dir: /app
-    command: npm run start
-    ports:
-      - 3000:3000
-    networks:
-      - mysql-network
+    command: npm start
     depends_on:
-      - api
-
+      - db
+    environment:
+      DB_HOST: mysql://db:3306
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend  
+  api:
+    build:
+      dockerfile: Dockerfile.api
+    working_dir: /api
+    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; node index.js'
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+    networks:
+      - backend
+      - frontend  
+  db:
+    image: mysql:8
+    # command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+        MYSQL_DATABASE: 'test'
+        MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on: 
+      - db
+    networks:
+      - backend
 volumes:
-  mysql:
-  mysql_data:
-
+  db-data:
 networks:
-  mysql-network:
+  backend:
+  # frontend:

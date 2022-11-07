@@ -1,18 +1,13 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-
 const app = express();
+const mysql = require('mysql2');
+const cors = require('cors');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
 require('./routes/index.js')(app);
 
-// app.get('/', (req, res)=>{
-//     console.log("welcome home");
-// });
-
-app.listen(3001, ()=>{
-    console.log('running on port 3001');
-});
+app.listen(3001, () => {
+    console.log('Server listening on port 3001')
+})

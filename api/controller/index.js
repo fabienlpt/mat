@@ -1,52 +1,60 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const con = mysql.createConnection({  
-    host: "mysql",
-    user: "username",
-    password: "password",
-    database: "test",
-    port: 3306,
+const con = mysql.createConnection({
+    host: 'db',
+    user: 'root',
+    password: 'root',
+    database: 'test',
+    port: 3306
 });
 
 con.connect(function(err) {
-    console.log(err);
     if (err) throw err;
     console.log("Connected!");
 })
 
-// Create and Save a new Todo
+// Create and Save a new material
 exports.create = (req, res) => {
     // Validate request
+    if (!req.body.name) {
+        return res.status(400).send({
+            message: "Material name can not be empty"
+        });
+    }
     if (!req.body.description) {
         return res.status(400).send({
             message: "Material description can not be empty"
         });
     }
-
-    var params = req.body;
-    console.log(params);
-
-    connection.query("INSERT INTO material SET ? ", params,
-        function (error, results, fields) {
-            if (error) throw error;
-            return res.send({
-                data: results,
-                message: 'New material has been created successfully.'
-            });
-        });
+    const name = req.body.name;
+    const description = req.body.description;
+    console.log(req.body)
+    con.query(
+        'INSERT INTO material (name, description) VALUES (?,?)',
+        [name, description],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    );
 };
 
 // Retrieve and return all material from the database.
-exports.findAll = (req, res) => {
-    connection.query('select * from material',
-        function (error, results, fields) {
-            if (error) throw error;
-            res.end(JSON.stringify(results));
-        });
+exports.read = (req, res) => {
+    con.query('SELECT * FROM material',(err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.send(result)
+        }
+    })
 };
 
 // Find a single material with a id
-exports.findOne = (req, res) => {
+exports.readone = (req, res) => {
 
     connection.query('select * from material where Id=?',
         [req.params.id],
@@ -59,35 +67,41 @@ exports.findOne = (req, res) => {
 // Update a material identified by the id in the request
 exports.update = (req, res) => {
     // Validate Request
+    if (!req.body.name) {
+        return res.status(400).send({
+            message: "Material name can not be empty"
+        });
+    }
     if (!req.body.description) {
         return res.status(400).send({
             message: "Material description can not be empty"
         });
     }
 
-    console.log(req.params.id);
-    console.log(req.body.description);
-    connection.query('UPDATE `material` SET `name`=?,`description`=? where `id`=?',
-        [req.body.name, req.body.description, req.params.id],
-        function (error, results, fields) {
-            if (error) throw error;
-            res.end(JSON.stringify(results));
-        });
+    const id = req.body.id;
+    const name = req.body.name;
+    const description = req.body.description;
+    db.query(
+        'UPDATE material SET name = ?, description = ? WHERE id = ?',
+        [name, description, id],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    );
 };
 
 // Delete a material with the specified id in the request
 exports.delete = (req, res) => {
-    console.log(req.body);
-    connection.query('DELETE FROM `material` WHERE `Id`=?', 
-        [req.body.id], function (error, results, fields) {
-            if (error) throw error;
-            res.end('Record has been deleted!');
-    });
+    const id = req.body.id;
+    db.query('DELETE FROM material WHERE id = ?', id, (err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.send(result)
+        }     
+    })
 };
-
-// app.get('/api/get', (req, res)=>{
-//     const sqlSelect = "SELECT * FROM material;";
-//     con.query(sqlSelect, (err, result) => {
-//         res.send(result);
-//     });
-// });

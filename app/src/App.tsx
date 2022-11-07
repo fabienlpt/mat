@@ -1,10 +1,10 @@
 import React from 'react';
-import Form  from './ts/components/Form';
+import NewMaterial  from './ts/components/form/newMaterialForm';
 
 function App() {
   return (
     <div className="App">
-      <Form />
+      <NewMaterial />
     </div>
   );
 }
