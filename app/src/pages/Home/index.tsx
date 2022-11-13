@@ -17,7 +17,8 @@ const Home: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
             body: null
         })
-        .then(resp => resp.text()).then(console.log)
+        // .then(resp => resp.text()).then(console.log)
+        .then(response => response.json())
         .then(function (response) {
             setMaterials(response);
         })
@@ -29,7 +30,8 @@ const Home: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
             body: null
         })
-        .then(resp => resp.text()).then(console.log)
+        // .then(resp => resp.text()).then(console.log)
+        .then(response => response.json())
         .then(function (response) {
             setLends(response);
         })
