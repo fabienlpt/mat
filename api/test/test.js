@@ -70,8 +70,8 @@ describe('DELETE /api/material/delete', () => {
 
 // ---------------------------- LEND ----------------------------
 
-describe('POST /api/lend/create', function () {
-    it('respond with 200 created', function (done) {
+describe('POST /api/lend/create', function (done) {
+    it('respond with 200 created', function () {
         request(app)
             .post('/api/lend/create')
             .send({
@@ -138,8 +138,8 @@ describe('DELETE /api/lend/delete', () => {
     });
 });
 
-describe('POST /api/sendmail', function () {
-    it('respond with 200 created', function (done) {
+describe('POST /api/sendmail', function (done) {
+    it('respond with 200 created', function () {
         request(app)
             .post('/api/sendmail')
             .send({
