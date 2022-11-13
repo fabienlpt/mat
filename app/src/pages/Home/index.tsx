@@ -15,6 +15,7 @@ const Home: React.FC = () => {
         fetch('https://fabien.iamroot.fr/api/material/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
+            body: null
         })
         .then(response => response.json())
         .then(function (response) {
@@ -29,6 +30,7 @@ const Home: React.FC = () => {
         fetch('https://fabien.iamroot.fr/api/lend/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
+            body: null
         })
         .then(response => response.json())
         .then(function (response) {
