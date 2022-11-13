@@ -2,7 +2,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-app.use(cors());
+const corsOptions = {
+    origin: 'https://fabien.iamroot.fr',
+    credentials: true,
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 require('./routes/index.js')(app);
