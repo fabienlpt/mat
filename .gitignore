@@ -1,2 +1,5 @@
-api/nodesmodules
-app/nodesmodules
+# Untrack folders 
+
+git update-index --assume-unchanged api/node_modules
+
+git update-index --assume-unchanged app/node_modules

@@ -4,7 +4,7 @@ const con = mysql.createConnection({
     host: 'db',
     user: 'root',
     password: 'root',
-    database: 'test',
+    database: 'lend_nws',
     port: 3306
 });
 
@@ -16,19 +16,15 @@ con.connect(function(err) {
 // Create and Save a new material
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.name) {
+    if (!(req.body.name && req.body.description)) {
         return res.status(400).send({
-            message: "Material name can not be empty"
+            message: "Tout les champs doivent être remplis"
         });
     }
-    if (!req.body.description) {
-        return res.status(400).send({
-            message: "Material description can not be empty"
-        });
-    }
+
     const name = req.body.name;
     const description = req.body.description;
-    console.log(req.body)
+    
     con.query(
         'INSERT INTO material (name, description) VALUES (?,?)',
         [name, description],
@@ -55,33 +51,27 @@ exports.read = (req, res) => {
 
 // Find a single material with a id
 exports.readone = (req, res) => {
-
-    connection.query('select * from material where Id=?',
+    con.query('select * from material where id=?',
         [req.params.id],
-        function (error, results, fields) {
+        function (error, results) {
             if (error) throw error;
-            res.end(JSON.stringify(results));
+            res.send(results);
         });
 };
 
 // Update a material identified by the id in the request
 exports.update = (req, res) => {
     // Validate Request
-    if (!req.body.name) {
+    if (!req.body.name && !req.body.description) {
         return res.status(400).send({
-            message: "Material name can not be empty"
-        });
-    }
-    if (!req.body.description) {
-        return res.status(400).send({
-            message: "Material description can not be empty"
+            message: "Material content can not be empty"
         });
     }
 
     const id = req.body.id;
     const name = req.body.name;
     const description = req.body.description;
-    db.query(
+    con.query(
         'UPDATE material SET name = ?, description = ? WHERE id = ?',
         [name, description, id],
         (err, result) => {
@@ -97,7 +87,7 @@ exports.update = (req, res) => {
 // Delete a material with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.body.id;
-    db.query('DELETE FROM material WHERE id = ?', id, (err, result) => {
+    con.query('DELETE FROM material WHERE id = ?', id, (err, result) => {
         if (err) {
             console.log(err)
         } else {

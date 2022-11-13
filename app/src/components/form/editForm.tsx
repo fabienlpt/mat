@@ -10,7 +10,7 @@ const Edit: React.FC<IProps> = (props) => {
     const [description, setDescription] = useState('');
 
     const updateForm = (id : any) => {
-        fetch('http://localhost:3001/api/update',{
+        fetch('http://localhost:3001/api/material/update',{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id, name: name, description: description})

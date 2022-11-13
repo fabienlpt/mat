@@ -7,7 +7,7 @@ const NewMaterial: React.FC = () => {
     const [materialList, setMaterialList] = useState<any>([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/get',{
+        fetch('http://localhost:3001/api/material/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -21,8 +21,9 @@ const NewMaterial: React.FC = () => {
         });
     },[]);
     
-      const submitForm = () => {
-        fetch('http://localhost:3001/api/create',{
+      const handleSubmit = (e: any) => {
+        e.preventDefault();
+        fetch('http://localhost:3001/api/material/create',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({name: name, description: description})
@@ -35,7 +36,7 @@ const NewMaterial: React.FC = () => {
     
       
       const deleteForm = (id : any) => {
-        fetch('http://localhost:3001/api/delete',{
+        fetch('http://localhost:3001/api/material/delete',{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -47,7 +48,7 @@ const NewMaterial: React.FC = () => {
       };
     
       const updateForm = (id : any) => {
-        fetch('http://localhost:3001/api/update',{
+        fetch('http://localhost:3001/api/material/update',{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id, name: name, description: description})
@@ -59,7 +60,7 @@ const NewMaterial: React.FC = () => {
       };
     return (
         <>
-             <h1>New Material</h1>
+            <h1>New Material</h1>
 
             <div className='form'>
             <label>Material Name: </label>
@@ -70,7 +71,7 @@ const NewMaterial: React.FC = () => {
             <input type='text' name='materialDescription' onChange={(e)=> {
                 setDescription(e.target.value) 
             }}/>
-            <button onClick={submitForm}>Submit</button>
+            <button onClick={handleSubmit}>Submit</button>
 
             {materialList.map((val : any)=>{
                 return (
