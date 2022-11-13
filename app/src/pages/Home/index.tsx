@@ -17,13 +17,10 @@ const Home: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
             body: null
         })
-        .then(response => response.json())
+        .then(resp => resp.text()).then(console.log)
         .then(function (response) {
             setMaterials(response);
         })
-        .catch(function (error) {
-            console.log(error);
-        });
     },[]);
 
     useEffect(() => {
@@ -32,13 +29,10 @@ const Home: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
             body: null
         })
-        .then(response => response.json())
+        .then(resp => resp.text()).then(console.log)
         .then(function (response) {
             setLends(response);
         })
-        .catch(function (error) {
-            console.log(error);
-        });
     },[]);
 
     // Send mail to the email of lend
