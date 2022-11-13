@@ -5,13 +5,16 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import theme from "./services/theme";
+
 import Home from "./pages/Home";
 import Material from "./pages/Materials";
+import Lend from "./pages/Lend";
 import LendMaterial from "./pages/LendMaterial";
+import UpdateMaterial from "./pages/updateMaterial";
+
 import NavBar from "./components/header";
-import NewMaterial from "./components/form/newMaterialForm";
-import UpdateMaterial from "./components/form/updateMaterialForm";
-import NewLend from "./components/form/newLendForm";
+import NewMaterial from "./pages/newMaterial";
+import NewLend from "./pages/newLend";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -25,10 +28,11 @@ root.render(
 					<Routes >
 						<Route path="/" element={<Home/>} />
 						<Route path="/material" element={<Material/>} />
-						<Route path="/reservation/:id" element={<LendMaterial/>} />
+						<Route path="/lend" element={<Lend/>} />
+						<Route path="/material/:id/update" element={<UpdateMaterial />} />
+
 						<Route path="/add-material" element={<NewMaterial/>} />
 						<Route path="/add-lend/:id" element={<NewLend/>} />
-						<Route path="tertiaire" element={<UpdateMaterial />} />
 					</Routes>
 				</ThemeProvider>
 		</BrowserRouter>

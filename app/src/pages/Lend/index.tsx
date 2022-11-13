@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 // TODO : Home page is to see all lend of materials which are not returned
 
-const Home: React.FC = () => {
+const Lend: React.FC = () => {
     const [materials, setMaterials] = useState([]);
     const [lends, setLends] = useState([]);
     let navigate = useNavigate();
@@ -55,6 +55,23 @@ const Home: React.FC = () => {
         });
     }
 
+    const delete_lend = (id: number) => {
+        fetch('https://fabien.iamroot.fr/api/lend/delete',{
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+        .then(response => response.json())
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+
+
 
     return (
         <>
@@ -72,30 +89,37 @@ const Home: React.FC = () => {
                 </thead>
                 <tbody>
                     {lends.map((val : any)=>{
-                        if(val.is_returned === 0){
-                            // Store the material name and description where material.id is equal to lend.material_id
-                            let materialName = "";
-                            let materialDescription = "";
-                            materials.map((material : any)=>{
-                                if(material.id === val.material_id){
-                                    materialName = material.name;
-                                    materialDescription = material.description;
-                                }
-                            })
-                            return (
-                                <tr key={val.id}>
-                                    <td>{materialName}</td>
-                                    <td>{materialDescription}</td>
-                                    <td>{val.email}</td>
-                                    <td>{val.lend_date}</td>
-                                    <td>{val.return_date}</td>
-                                    <td>
-                                        <Button onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button>
-                                        <Button onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
-                                    </td>
-                                </tr>
-                            )
-                        }
+                        // Store the material name and description where material.id is equal to lend.material_id
+                        let materialName = "";
+                        let materialDescription = "";
+                        materials.map((material : any)=>{
+                            if(material.id === val.material_id){
+                                materialName = material.name;
+                                materialDescription = material.description;
+                            }
+                        })
+                        return (
+                            <tr key={val.id}>
+                                <td>{materialName}</td>
+                                <td>{materialDescription}</td>
+                                <td>{val.email}</td>
+                                <td>{val.lend_date}</td>
+                                <td>{val.return_date}</td>
+                                <td>
+                                    {val.is_returned === 0 ? (
+                                        <>
+                                            <Button onClick={()=>sendMail(val.material_id, materialName)}>Send Mail</Button>
+                                            <Button onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Button onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                            <Button onClick={() => delete_lend(val.id)}>Delete</Button>
+                                        </>
+                                    )}
+                                </td>
+                            </tr>
+                        )
                     })}
                 </tbody>
             </Table>
@@ -130,4 +154,4 @@ const Table = styled.table`
 const Button = styled.button`
     background-color: ${({theme})=> theme.colors.layout.tertiary};
 `;
-export default Home;
+export default Lend;

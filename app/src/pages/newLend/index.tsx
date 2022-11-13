@@ -11,7 +11,7 @@ const NewLend: React.FC = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        fetch('http://localhost:3001/api/lend/create',{
+        fetch('https://fabien.iamroot.fr/api/lend/create',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

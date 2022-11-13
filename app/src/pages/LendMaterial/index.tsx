@@ -12,7 +12,7 @@ const LendMaterial: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/material/get/'+id,{
+        fetch('https://fabien.iamroot.fr/api/material/get/'+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -26,7 +26,7 @@ const LendMaterial: React.FC = () => {
     },[]);
     
     useEffect(() => {
-        fetch('http://localhost:3001/api/lend/get/'+id,{
+        fetch('https://fabien.iamroot.fr/api/lend/get/'+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
