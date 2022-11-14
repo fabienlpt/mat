@@ -12,7 +12,7 @@ const Material: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/material/get',{
+        fetch('https://fabien.iamroot.fr/server/api/material/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -26,7 +26,7 @@ const Material: React.FC = () => {
     },[]);
     
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/lend/get',{
+        fetch('https://fabien.iamroot.fr/server/api/lend/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -40,7 +40,7 @@ const Material: React.FC = () => {
     },[]);
 
     const deleteForm = (id : any) => {
-        fetch('https://fabien.iamroot.fr/api/lend/delete',{
+        fetch('https://fabien.iamroot.fr/server/api/lend/delete',{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -50,7 +50,7 @@ const Material: React.FC = () => {
             console.log(error);
         });
 
-        fetch('https://fabien.iamroot.fr/api/material/delete',{
+        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -85,16 +85,18 @@ const Material: React.FC = () => {
                             <td>{material.id}</td>
                             <td>{material.name}</td>
                             <td>{material.description}</td>
-                            <td>{materialLend.includes(material.id) ? "Réservé" : "Disponible"}</td>
+                            <td>{materialLend.includes(material.id) ? "Réservé" : <Button className="lend" onClick={() => navigate(`/add-lend/`+material.id)}>Réserver</Button>}</td>
                             <td>
-                                <Button onClick={() => navigate(`/material/${material.id}/update`)}>Edit</Button>
-                                <Button onClick={() => deleteForm(material.id)}>Delete</Button>
+                                <Button className="update" onClick={() => navigate(`/material/${material.id}/update`)}>Edit</Button>
+                                <Button className="delete" onClick={() => deleteForm(material.id)}>Delete</Button>
                             </td>
                         </tr>
 
                     ))}
                 </tbody>
             </Table>
+
+            <Button className="add" onClick={() => navigate(`/add-material`)}>Ajouter un nouveau matériel</Button>
         </>
     );
 };
@@ -107,7 +109,7 @@ const Table = styled.table`
     margin: auto;
     text-align: center;
     th {
-        background-color: #009879;
+        background-color: ${({theme})=> theme.colors.layout.secondary};
         color: white;
         padding: 12px 15px;
     }
@@ -122,6 +124,40 @@ const Table = styled.table`
     }
 `;
 const Button = styled.button`
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ddd;
     background-color: ${({theme})=> theme.colors.layout.tertiary};
+    color: black;
+    margin: 0.5rem;
+    cursor: pointer;
+
+    &.update {
+        background-color: ${({theme})=> theme.colors.layout.secondary};
+    }
+    &.delete {
+        background-color: ${({theme})=> theme.colors.layout.primary};
+        color: white;
+    }
+    &.add {
+        background-color: ${({theme})=> theme.colors.layout.secondary};
+        margin: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        &:hover {
+            background-color: ${({theme})=> theme.colors.layout.secondary};
+        }
+    }
+    &.lend {
+        background-color: ${({theme})=> theme.colors.layout.body};
+        color: black;
+    }
+        
 `;
+
 export default Material;

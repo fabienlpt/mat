@@ -1,18 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 const NewMaterial: React.FC = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     
+    const navigate = useNavigate();
+    
       const handleSubmit = (e: any) => {
         e.preventDefault();
-        fetch('https://fabien.iamroot.fr/api/material/create',{
+        fetch('https://fabien.iamroot.fr/server/api/material/create',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({name: name, description: description})
         }).then(function (response) {
             console.log(response);
+            navigate('/');
         }).catch(function (error) {
             console.log(error);
         });

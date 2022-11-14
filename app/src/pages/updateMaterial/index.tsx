@@ -5,10 +5,11 @@ const UpdateMaterial: React.FC = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
+    const [LendId, setLendId] = useState("");
     const [email, setEmail] = useState("");
     const [lend_date, setLend_date] = useState("");
     const [return_date, setReturn_date] = useState("");
-    const [is_returned, setIs_returned] = useState(false);
+    const [is_returned, setIs_returned] = useState(0);
 
     const navigate = useNavigate();
     let id = useParams()["id"];
@@ -16,7 +17,7 @@ const UpdateMaterial: React.FC = () => {
     console.log(id);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/material/get/'+id,{
+        fetch('https://fabien.iamroot.fr/server/api/material/get/'+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -31,12 +32,13 @@ const UpdateMaterial: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/lend/get/'+id,{
+        fetch('https://fabien.iamroot.fr/server/api/lend/get/'+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
         .then(response => response.json())
         .then(function (response) {
+            setLendId(response[0].id);
             setEmail(response[0].email);
             setLend_date(response[0].lend_date);
             setReturn_date(response[0].return_date);
@@ -50,7 +52,7 @@ const UpdateMaterial: React.FC = () => {
 
       
     const deleteForm = (id : any) => {
-        fetch('https://fabien.iamroot.fr/api/material/delete',{
+        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -65,7 +67,7 @@ const UpdateMaterial: React.FC = () => {
 
     const updateForm = (id : any) => {
 
-        fetch('https://fabien.iamroot.fr/api/material/update',{
+        fetch('https://fabien.iamroot.fr/server/api/material/update',{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id, name: name, description: description})
@@ -75,10 +77,10 @@ const UpdateMaterial: React.FC = () => {
             console.log(error);
         });
 
-        fetch('https://fabien.iamroot.fr/api/lend/update',{
+        fetch('https://fabien.iamroot.fr/server/api/lend/update',{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id: id, email: email, lend_date: lend_date, return_date: return_date, is_returned: is_returned})
+            body: JSON.stringify({id: LendId, email: email, lend_date: lend_date, return_date: return_date, is_returned: is_returned})
         }).then(function (response) {
             console.log(response);
             navigate('/');
@@ -113,11 +115,13 @@ const UpdateMaterial: React.FC = () => {
                     setReturn_date(e.target.value);
                 }}/>
                 <p>Est retourné :</p>
-                <input type='checkbox' id='updateInput' value={is_returned} onChange={(e)=>{
-                    setIs_returned(e.target.checked);
-                }}/>
+                {is_returned === 0 ? <input type='checkbox' id='updateInput' onChange={(e)=>{
+                    setIs_returned(1);
+                }}/> : <input type='checkbox' id='updateInput' checked onChange={(e)=>{
+                    setIs_returned(0);
+                }}/>}
                 <button onClick={() => {updateForm(id)}}>Update</button>
-            </div>;
+            </div>
         </>
     );
 };

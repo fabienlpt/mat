@@ -21,7 +21,7 @@ const Container = styled.div`
     width: 100%;
   	height: 60px;
   	padding: 0px 20px 0 10px;
-	background-color: ${({theme})=> theme.colors.layout.primary};
+	background-color: ${({theme})=> theme.colors.layout.body};
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -30,5 +30,6 @@ const Container = styled.div`
 	.logo {
     	padding: 15px 0;
   	}
+    margin-bottom: 20px;
 `;
 export default NavBar;

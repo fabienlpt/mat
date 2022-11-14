@@ -5,16 +5,13 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import theme from "./services/theme";
-
+import NavBar from "./components/header";
 import Home from "./pages/Home";
 import Material from "./pages/Materials";
 import Lend from "./pages/Lend";
-import LendMaterial from "./pages/LendMaterial";
-import UpdateMaterial from "./pages/updateMaterial";
-
-import NavBar from "./components/header";
 import NewMaterial from "./pages/newMaterial";
 import NewLend from "./pages/newLend";
+import UpdateMaterial from "./pages/updateMaterial";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

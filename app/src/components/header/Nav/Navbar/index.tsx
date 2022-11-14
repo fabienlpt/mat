@@ -12,12 +12,9 @@ const Navbar: React.FC = () => {
 			<ListItem className="nav-link">
 				<ItemLink link="/lend" title="Réservations"/>
 			</ListItem>
-			{/* <ListItem className="nav-link">
-				<ItemLink link="/add-lend" title="users"/>
-			</ListItem>
 			<ListItem className="nav-link">
-				<ItemLink link="/" title="users"/>
-			</ListItem> */}
+				<ItemLink link="/" title="Settings"/>
+			</ListItem>
 		</Container>
 	);
 };
@@ -30,7 +27,7 @@ const Container = styled.ul`
 	${mediaQueries("desktop")`
 		width: 100%;
 		flex-flow: row nowrap;
-		justify-content: space-between;
+		justify-content: space-around;
 		list-style: none;
 		margin-top: 0;
 		margin-left: 20px;
@@ -42,10 +39,10 @@ const Container = styled.ul`
 const ListItem = styled.li`
 	display: block;
 	&.active {
-		background-color: ${({theme})=> theme.colors.layout.tertiary};
+		background-color: #FFFFFF;
 	}
 	${mediaQueries("desktop")`
-		width: 80px;
+		width: 120px;
 		height: 60px;
 		display: flex;
 		align-items: center;

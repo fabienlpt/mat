@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 
 
@@ -11,7 +11,7 @@ const NewLend: React.FC = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        fetch('https://fabien.iamroot.fr/api/lend/create',{
+        fetch('https://fabien.iamroot.fr/server/api/lend/create',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

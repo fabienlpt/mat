@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `lend` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `lend` (`material_id`, `email`, `lend_date`, `return_date`, `is_returned`) VALUES
-(1, 'test@gmail.com', '2022-10-01', '2023-10-01', false),
+(1, 'test@gmail.com', '2022-10-01', '2023-10-01', true),
 (2, 'test2@gmail.com', '2022-10-01', '2023-10-01', false),
 (3, 'test3@gmail.com', '2022-10-01', '2023-10-01', false),
 (4, 'test4@gmail.com', '2022-10-01', '2023-10-01', false),
@@ -55,4 +55,4 @@ INSERT INTO `lend` (`material_id`, `email`, `lend_date`, `return_date`, `is_retu
 (7, 'test7@gmail.com', '2022-10-01', '2023-10-01', false),
 (8, 'test8@gmail.com', '2022-10-01', '2023-10-01', false),
 (9, 'test9@gmail.com', '2022-10-01', '2023-10-01', false),
-(10, 'test10@gmail.com', '2022-10-01', '2023-10-01', false);
+(10, 'test10@gmail.com', '2022-10-01', '2023-10-01', true);

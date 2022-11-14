@@ -1,7 +1,6 @@
 import { mediaQueries } from "../../../services/media";
 import React from "react";
 import styled from "styled-components";
-import Menu from "./Menu";
 import Navbar from "./Navbar";
 
 interface IProps {
@@ -12,7 +11,6 @@ const Nav: React.FC<IProps> = ({isopen}) => {
 	return (
 		<Container isopen={isopen}>
 			<Navbar/>
-			<Menu/>
 		</Container>
 	);
 };

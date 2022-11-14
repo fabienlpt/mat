@@ -4,9 +4,9 @@ const theme: Theme = {
 	colors: {
 		layout: {
 			body: "#f8f9fa",
-			primary: "#F8F9FA",
-			secondary: "#E4E3FD",
-			tertiary: "#CCD2E3",
+			primary: "#e94a34",
+			secondary: "#01a5a6",
+			tertiary: "#fdc800",
 		},
 		text: {
 			primary: "#0F0F0F",

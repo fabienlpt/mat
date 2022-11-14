@@ -12,34 +12,36 @@ const Home: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/material/get',{
+        fetch('https://fabien.iamroot.fr/server/api/material/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: null
         })
-        // .then(resp => resp.text()).then(console.log)
         .then(response => response.json())
         .then(function (response) {
             setMaterials(response);
         })
+        .catch(function (error) {
+            console.log(error);
+        });
     },[]);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/api/lend/get',{
+        fetch('https://fabien.iamroot.fr/server/api/lend/get',{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: null
         })
-        // .then(resp => resp.text()).then(console.log)
         .then(response => response.json())
         .then(function (response) {
             setLends(response);
         })
+        .catch(function (error) {
+            console.log(error);
+        });
     },[]);
 
     // Send mail to the email of lend
     const sendMail = (material_id: number, name: string) => {
-        fetch('https://fabien.iamroot.fr/api/sendMail',{
+        fetch('https://fabien.iamroot.fr/server/api/sendMail',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ material_id: material_id, name: name })
@@ -53,6 +55,30 @@ const Home: React.FC = () => {
         });
     }
 
+    const deleteForm = (id : any) => {
+        fetch('https://fabien.iamroot.fr/server/api/lend/delete',{
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id: id})
+        }).then(function (response) {
+            console.log(response);
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id: id})
+        }).then(function (response) {
+            console.log(response);
+            navigate('/');
+        }).catch(function (error) {
+            console.log(error);
+        });
+        
+    };
+
 
     return (
         <>
@@ -65,6 +91,7 @@ const Home: React.FC = () => {
                         <th>Email</th>
                         <th>Lend Date</th>
                         <th>Return Date</th>
+                        <th>Send Mail</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -87,9 +114,10 @@ const Home: React.FC = () => {
                                     <td>{val.email}</td>
                                     <td>{val.lend_date}</td>
                                     <td>{val.return_date}</td>
+                                    <td><Button className="mail" onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button></td>
                                     <td>
-                                        <Button onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button>
-                                        <Button onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                        <Button className="update" onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                        <Button className="delete" onClick={() => deleteForm(val.material_id)}>Delete</Button>
                                     </td>
                                 </tr>
                             )
@@ -110,7 +138,7 @@ const Table = styled.table`
     margin: auto;
     text-align: center;
     th {
-        background-color: #009879;
+        background-color: ${({theme})=> theme.colors.layout.primary};
         color: white;
         padding: 12px 15px;
     }
@@ -126,6 +154,24 @@ const Table = styled.table`
 `;
 
 const Button = styled.button`
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ddd;
     background-color: ${({theme})=> theme.colors.layout.tertiary};
+    color: black;
+    margin: 0.5rem;
+    cursor: pointer;
+
+    &.update {
+        background-color: ${({theme})=> theme.colors.layout.secondary};
+    }
+    &.delete {
+        background-color: ${({theme})=> theme.colors.layout.primary};
+        color: white;
+    }
+    &.mail {
+        background-color: ${({theme})=> theme.colors.layout.body};
+        color: black;
+    }
 `;
 export default Home;

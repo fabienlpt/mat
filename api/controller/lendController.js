@@ -114,15 +114,14 @@ exports.update = (req, res) => {
         });
     }
     const id = req.body.id;
-    const material_id = req.body.material_id;
     const email = req.body.email;
     const lend_date = new Date(req.body.lend_date);
     const return_date = new Date(req.body.return_date);
     const is_returned = req.body.is_returned;
 
     con.query(
-        'UPDATE lend SET material_id = ?, email = ?, lend_date = ?, return_date = ? , is_returned = ? WHERE id = ?',
-        [material_id, email, lend_date, return_date, is_returned, id],
+        'UPDATE lend SET email = ?, lend_date = ?, return_date = ? , is_returned = ? WHERE id = ?',
+        [email, lend_date, return_date, is_returned, id],
         (err, result) => {
             if (err) {
                 res.send(err);
