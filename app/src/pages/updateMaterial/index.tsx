@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
+import { config } from "../../config.js";
 
 const UpdateMaterial: React.FC = () => {
     const [name, setName] = useState("");
@@ -17,7 +18,7 @@ const UpdateMaterial: React.FC = () => {
     console.log(id);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/material/get/'+id,{
+        fetch(`${config.serverBaseURL}/api/material/get/`+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -32,7 +33,7 @@ const UpdateMaterial: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/get/'+id,{
+        fetch(`${config.serverBaseURL}/api/lend/get/`+id,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -52,7 +53,7 @@ const UpdateMaterial: React.FC = () => {
 
       
     const deleteForm = (id : any) => {
-        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
+        fetch(`${config.serverBaseURL}/api/material/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -67,7 +68,7 @@ const UpdateMaterial: React.FC = () => {
 
     const updateForm = (id : any) => {
 
-        fetch('https://fabien.iamroot.fr/server/api/material/update',{
+        fetch(`${config.serverBaseURL}/api/material/update`,{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id, name: name, description: description})
@@ -77,7 +78,7 @@ const UpdateMaterial: React.FC = () => {
             console.log(error);
         });
 
-        fetch('https://fabien.iamroot.fr/server/api/lend/update',{
+        fetch(`${config.serverBaseURL}/api/lend/update`,{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: LendId, email: email, lend_date: lend_date, return_date: return_date, is_returned: is_returned})

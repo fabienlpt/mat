@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import { config } from "../../config.js";
 
 
 const NewMaterial: React.FC = () => {
@@ -10,7 +11,7 @@ const NewMaterial: React.FC = () => {
     
       const handleSubmit = (e: any) => {
         e.preventDefault();
-        fetch('https://fabien.iamroot.fr/server/api/material/create',{
+        fetch(`${config.serverBaseURL}/api/material/create`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({name: name, description: description})

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
+import { config } from "../../config.js";
 
 
 const NewLend: React.FC = () => {
@@ -11,7 +12,7 @@ const NewLend: React.FC = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        fetch('https://fabien.iamroot.fr/server/api/lend/create',{
+        fetch(`${config.serverBaseURL}/api/lend/create`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

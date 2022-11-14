@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import { config } from "../../config.js";
 
 
 // TODO : Material page is to see all materials with update and delete button
@@ -12,7 +13,7 @@ const Material: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/material/get',{
+        fetch(`${config.serverBaseURL}/api/material/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -26,7 +27,7 @@ const Material: React.FC = () => {
     },[]);
     
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/get',{
+        fetch(`${config.serverBaseURL}/api/lend/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -40,7 +41,7 @@ const Material: React.FC = () => {
     },[]);
 
     const deleteForm = (id : any) => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/delete',{
+        fetch(`${config.serverBaseURL}/api/lend/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -50,7 +51,7 @@ const Material: React.FC = () => {
             console.log(error);
         });
 
-        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
+        fetch(`${config.serverBaseURL}/api/material/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})

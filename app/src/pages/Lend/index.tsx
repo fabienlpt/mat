@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import { config } from "../../config.js";
 
 
 // TODO : Home page is to see all lend of materials which are not returned
@@ -12,7 +13,7 @@ const Lend: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/material/get',{
+        fetch(`${config.serverBaseURL}/api/material/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -26,7 +27,7 @@ const Lend: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/get',{
+        fetch(`${config.serverBaseURL}/api/lend/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -41,7 +42,7 @@ const Lend: React.FC = () => {
 
     // Send mail to the email of lend
     const sendMail = (material_id: number, name: string) => {
-        fetch('https://fabien.iamroot.fr/server/api/sendMail',{
+        fetch(`${config.serverBaseURL}/api/sendMail`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ material_id: material_id, name: name })
@@ -56,7 +57,7 @@ const Lend: React.FC = () => {
     }
 
     const delete_lend = (id: number) => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/delete',{
+        fetch(`${config.serverBaseURL}/api/lend/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id })

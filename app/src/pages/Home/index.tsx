@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import { config } from "../../config.js";
 
 
 // TODO : Home page is to see all lend of materials which are not returned
@@ -12,7 +13,7 @@ const Home: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/material/get',{
+        fetch(`${config.serverBaseURL}/api/material/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -26,7 +27,7 @@ const Home: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/get',{
+        fetch(`${config.serverBaseURL}/api/lend/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -41,7 +42,7 @@ const Home: React.FC = () => {
 
     // Send mail to the email of lend
     const sendMail = (material_id: number, name: string) => {
-        fetch('https://fabien.iamroot.fr/server/api/sendMail',{
+        fetch(`${config.serverBaseURL}api/sendMail`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ material_id: material_id, name: name })
@@ -56,7 +57,7 @@ const Home: React.FC = () => {
     }
 
     const deleteForm = (id : any) => {
-        fetch('https://fabien.iamroot.fr/server/api/lend/delete',{
+        fetch(`${config.serverBaseURL}server/api/lend/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -66,7 +67,7 @@ const Home: React.FC = () => {
             console.log(error);
         });
 
-        fetch('https://fabien.iamroot.fr/server/api/material/delete',{
+        fetch(`${config.serverBaseURL}/api/material/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
