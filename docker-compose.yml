@@ -12,8 +12,6 @@ services:
       DB_HOST: mysql://db:3306
     ports:
       - 3000:3000
-    networks:
-      - frontend  
   api:
     build:
       context: .
@@ -24,9 +22,6 @@ services:
       - db
     ports:
       - 3001:3001
-    networks:
-      - backend
-      - frontend  
   db:
     image: mysql:8
     restart: unless-stopped
@@ -38,10 +33,5 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
-    networks:
-      - backend
 volumes:
   db-data:
-networks:
-  backend:
-  frontend:
