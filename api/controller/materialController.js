@@ -1,5 +1,7 @@
 const mysql = require('mysql2');
 
+// require('dotenv').config({path:__dirname+'../../.env'});
+
 const con = mysql.createConnection({
     host: 'db',
     user: 'root',

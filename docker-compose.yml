@@ -1,9 +1,28 @@
 version: '3'
 services:
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    container_name: db
+    environment:
+      MYSQL_DATABASE: 'lend_nws'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   app:
     build: 
       context: .
       dockerfile: Dockerfile.app
+    container_name: app
     working_dir: /app
     command: npm start
     depends_on:
@@ -16,22 +35,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
+    container_name: api
     working_dir: /api
-    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; node index.js'
+    command: node index.js
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - 3001:3001
-  db:
-    image: mysql:8
-    restart: unless-stopped
-    environment:
-        MYSQL_DATABASE: 'test'
-        MYSQL_ROOT_PASSWORD: 'root'
-    ports:
-      - 3306:3306
-    volumes:
-      - db-data:/var/lib/mysql
-      - ./database:/docker-entrypoint-initdb.d
 volumes:
   db-data:

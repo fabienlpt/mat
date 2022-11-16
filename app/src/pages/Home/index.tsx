@@ -6,6 +6,9 @@ import { config } from "../../config.js";
 
 
 // TODO : Home page is to see all lend of materials which are not returned
+// TODO : modification juste materiel / pareil pour emprunt
+// TODO : Quantité
+// TODO : suppression des emprunts lié au materiel
 
 const Home: React.FC = () => {
     const [materials, setMaterials] = useState([]);

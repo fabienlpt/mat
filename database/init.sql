@@ -1,5 +1,7 @@
 CREATE DATABASE IF NOT EXISTS lend_nws;
 
+-- CREATE USER IF NOT EXISTS 'lend_nws'@'emanresu' IDENTIFIED BY 'dr0wss4p';
+
 USE lend_nws;
 CREATE TABLE IF NOT EXISTS `material` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

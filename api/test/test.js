@@ -3,6 +3,7 @@ const app = require('../index.js');
 
 // ------------------- MATERIAL -------------------
 
+// Test bien ajouté en bdd (n=n+1)
 describe('POST /api/material/create', function () {
     it('respond with 200 created', function (done) {
         request(app)
