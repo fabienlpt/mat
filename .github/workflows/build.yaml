@@ -13,6 +13,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '14'
+      - name: Moove on api folder
+        run: cd api
       - name: Install dependencies
         run: npm install
       - name: Run tests
