@@ -4,7 +4,7 @@ name: Build image & Test
 
 jobs:
   test:
-    - name: Testing my api
+    name: Testing my api
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
