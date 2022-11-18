@@ -13,8 +13,7 @@ jobs:
       - uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - run:  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker login -p ${{ secrets.ACCES_TOKEN }} -u fabienlpt ghcr.io"
-      
+          
       - run:  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose pull"
 
       - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
