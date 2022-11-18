@@ -13,7 +13,7 @@ jobs:
         run: docker-compose up -d
       - name: Test
         run: |
-          docker-compose exec mat-api npm run test/test.js
+          docker-compose exec mat-api npm run test test/test.js
       - name: Stop docker-compose
         run: docker-compose down
 
