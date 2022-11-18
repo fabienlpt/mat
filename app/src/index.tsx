@@ -27,6 +27,7 @@ root.render(
 						<Route path="/material" element={<Material/>} />
 						<Route path="/lend" element={<Lend/>} />
 						<Route path="/material/:id/update" element={<UpdateMaterial />} />
+						<Route path="/lend/:id/update" element={<UpdateLend />} />
 
 						<Route path="/add-material" element={<NewMaterial/>} />
 						<Route path="/add-lend/:id" element={<NewLend/>} />

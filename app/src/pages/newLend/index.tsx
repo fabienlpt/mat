@@ -34,15 +34,15 @@ const NewLend: React.FC = () => {
             <h1>New Lend</h1>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Email: {email}
+                    Email:
                     <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
                 </label>
                 <label>
-                    Lend Date: {lend_date}
+                    Lend Date:
                     <input type="date" value={lend_date} onChange={e => setLendDate(e.target.value)} />
                 </label>
                 <label>
-                    Return Date: {return_date}
+                    Return Date:
                     <input type="date" value={return_date} onChange={e => setReturnDate(e.target.value)} />
                 </label>
                 <input type="submit" value="Submit" />

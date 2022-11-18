@@ -1,5 +1,5 @@
-# Untrack folders 
-
-git update-index --assume-unchanged api/node_modules
-
-git update-index --assume-unchanged app/node_modules
+coverage
+media
+*/node_modules
+out
+*.vsix
