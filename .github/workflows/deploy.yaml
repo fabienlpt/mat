@@ -13,5 +13,5 @@ jobs:
       - uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - run: |
+      - run: 
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls"
