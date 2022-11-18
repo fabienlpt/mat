@@ -13,5 +13,8 @@ jobs:
       - uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - run: 
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose pull && docker-compose down && docker-compose up -d && docker system prune -a -f"
+      - run:  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose pull"
+
+      - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
+
+      - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker system prune -a -f"
