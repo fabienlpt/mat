@@ -38,6 +38,7 @@ services:
     container_name: api
     working_dir: /api
     command: node index.js
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
