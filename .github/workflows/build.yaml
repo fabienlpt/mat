@@ -9,19 +9,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - name: Moove on api folder
-        working-directory: ./api
+      - name: Setup Docker compose
+        uses: docker-practice/actions-setup-docker-compose@master
+      - name: Build image
+        run: docker-compose up -d
+      - name: Test my api
         run: |
-          npm install
+          docker-compose exec mat-api
           npm test test/test.js
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: Run tests
-      #   run: npm test api/test/test.js
 
   build-docker:
     runs-on: ubuntu-latest
