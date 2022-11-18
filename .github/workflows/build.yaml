@@ -4,19 +4,29 @@ name: Build image & Test
 
 jobs:
   test:
-    name: Testing my api
+    name: Testing my api with docker compose
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Docker compose
-        uses: docker-practice/actions-setup-docker-compose@master
-      - name: Build image
+      - name: Run docker-compose
         run: docker-compose up -d
-      - name: Test my api
+      - name: Test
         run: |
-          docker-compose exec mat-api
-          npm test test/test.js
+          docker-compose exec mat-api npm run test
+      - name: Stop docker-compose
+        run: docker-compose down
+
+      # - name: Checkout
+      #   uses: actions/checkout@v3
+      # - name: Setup Docker compose
+      #   uses: docker-practice/actions-setup-docker-compose@master
+      # - name: Build image
+      #   run: docker-compose up -d
+      # - name: Test my api
+      #   run: |
+      #     docker-compose exec mat-api
+      #     npm test test/test.js
 
   build-docker:
     runs-on: ubuntu-latest
