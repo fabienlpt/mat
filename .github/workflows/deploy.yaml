@@ -14,4 +14,4 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
       - run: 
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker pull ghcr.io/fabienlpt/api:latest && docker pull ghcr.io/fabienlpt/app:latest && docker-compose down && docker-compose up -d"
