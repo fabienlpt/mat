@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: '14'
       - name: Moove on api folder
+        working-directory: ./api
         run: |
-          cd api
           npm install
           npm test test/test.js
       # - name: Install dependencies
