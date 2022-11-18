@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { config } from "../../config.js";
+import styled from 'styled-components';
 
 const UpdateLend: React.FC = () => {
     const [name, setName] = useState("");
@@ -67,17 +68,6 @@ const UpdateLend: React.FC = () => {
     };
 
     const updateForm = (id : any) => {
-
-        fetch(`${config.serverBaseURL}/api/material/update`,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id: id, name: name, description: description})
-        }).then(function (response) {
-            console.log(response);
-        }).catch(function (error) {
-            console.log(error);
-        });
-
         fetch(`${config.serverBaseURL}/api/lend/update`,{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -90,19 +80,16 @@ const UpdateLend: React.FC = () => {
         });
     };
     return (
-        <>
+        <Container>
             <h1>Update Material</h1>
 
             <div className='card'>
                 <button onClick={() => {deleteForm(id)}}>Delete</button>
                 <p>Nom</p>
-                <input type='text' id='updateInput' placeholder={name} onChange={(e)=> {
-                    setName(e.target.value)
-                }}/>
+
+                <input type='text' id='updateInput' placeholder={name} disabled />
                 <p>Description</p>
-                <input type='text' id='updateInput' placeholder={description} onChange={(e)=>{
-                    setDescription(e.target.value);
-                }}/>
+                <input type='text' id='updateInput' placeholder={description} disabled />
                 <p>Email</p>
                 <input type='text' id='updateInput' placeholder={email} onChange={(e)=>{
                     setEmail(e.target.value);
@@ -123,7 +110,59 @@ const UpdateLend: React.FC = () => {
                 }}/>}
                 <button onClick={() => {updateForm(id)}}>Update</button>
             </div>
-        </>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f5f5f5;
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        background-color: #f5f5f5;
+        button {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f5f5f5;
+            color: #000;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            &:hover {
+                background-color: #000;
+                color: #fff;
+            }
+        }
+        input {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f5f5f5;
+            color: #000;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            &:hover {
+                background-color: #000;
+                color: #fff;
+            }
+        }
+    }
+`;
+
 export default UpdateLend;

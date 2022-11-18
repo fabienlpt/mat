@@ -119,7 +119,7 @@ const Lend: React.FC = () => {
                                     )}
                                 </td>
                                 <td>
-                                    <Button className="update" onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                    <Button className="update" onClick={() => navigate(`/lend/${val.material_id}/update`)}>Edit</Button>
                                     <Button className="delete" onClick={() => delete_lend(val.id)}>Delete</Button>
                                 </td>
                             </tr>

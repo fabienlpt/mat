@@ -12,6 +12,7 @@ import Lend from "./pages/Lend";
 import NewMaterial from "./pages/newMaterial";
 import NewLend from "./pages/newLend";
 import UpdateMaterial from "./pages/updateMaterial";
+import UpdateLend from "./pages/updateLend";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

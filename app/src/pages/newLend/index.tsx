@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { config } from "../../config.js";
-
+import styled from 'styled-components';
 
 const NewLend: React.FC = () => {
     let material_id = useParams()["id"];
@@ -30,7 +30,7 @@ const NewLend: React.FC = () => {
     };
 
     return (
-        <>
+        <Container>
             <h1>New Lend</h1>
             <form onSubmit={handleSubmit}>
                 <label>
@@ -47,7 +47,14 @@ const NewLend: React.FC = () => {
                 </label>
                 <input type="submit" value="Submit" />
             </form>
-        </>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
 export default NewLend;

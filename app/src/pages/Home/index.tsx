@@ -120,7 +120,7 @@ const Home: React.FC = () => {
                                     <td>{val.return_date}</td>
                                     <td><Button className="mail" onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button></td>
                                     <td>
-                                        <Button className="update" onClick={() => navigate(`/material/${val.material_id}/update`)}>Edit</Button>
+                                        <Button className="update" onClick={() => navigate(`/lend/${val.material_id}/update`)}>Edit</Button>
                                         <Button className="delete" onClick={() => deleteForm(val.material_id)}>Delete</Button>
                                     </td>
                                 </tr>
