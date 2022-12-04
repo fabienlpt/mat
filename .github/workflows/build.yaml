@@ -20,14 +20,19 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: npm install
+        working-directory: api
       - name: Run tests
         run: npm test test/test.js
+        working-directory: api
       - name: Build image
         run: docker build -t my-api .
+        working-directory: api
       - name: Run image
         run: docker run -d -p 3001:3001 my-api
+        working-directory: api
       - name: Test image
         run: curl http://localhost:3000
+        working-directory: api
 
     # steps:
     #   - name: Checkout
