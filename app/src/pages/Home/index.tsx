@@ -5,6 +5,25 @@ import styled from 'styled-components';
 import { config } from "../../config.js";
 
 
+declare module namespace {
+
+    export interface ILends {
+        email: string;
+        id: number;
+        is_returned: number;
+        lend_date: Date;
+        material_id: number;
+        return_date: Date;
+    }
+
+    export interface IMaterials {
+        id: number;
+        name: string;
+        description: string;
+    }
+
+}
+
 // TODO : Home page is to see all lend of materials which are not returned
 // TODO : modification juste materiel / pareil pour emprunt
 // TODO : Quantité
@@ -22,6 +41,7 @@ const Home: React.FC = () => {
         })
         .then(response => response.json())
         .then(function (response) {
+            console.log(response);
             setMaterials(response);
         })
         .catch(function (error) {
@@ -36,6 +56,7 @@ const Home: React.FC = () => {
         })
         .then(response => response.json())
         .then(function (response) {
+            console.log(response);
             setLends(response);
         })
         .catch(function (error) {
@@ -100,12 +121,12 @@ const Home: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {lends.map((val : any)=>{
+                    {lends.map((val : namespace.ILends)=>{
                         if(val.is_returned === 0){
                             // Store the material name and description where material.id is equal to lend.material_id
                             let materialName = "";
                             let materialDescription = "";
-                            materials.map((material : any)=>{
+                            materials.map((material : namespace.IMaterials)=>{
                                 if(material.id === val.material_id){
                                     materialName = material.name;
                                     materialDescription = material.description;
