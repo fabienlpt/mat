@@ -6,7 +6,7 @@ jobs:
   test:
     name: Testing my api
     runs-on: ubuntu-latest
-    
+
     # Testing my nodejs api
     steps:
       - name: Checkout
@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
       - name: Install dependencies
         run: npm install
       - name: Run tests
