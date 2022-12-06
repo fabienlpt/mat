@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "npm start",
-    "proxy": "https://fabien.iamroot.fr/"
+    "start": "npm start"
   },
   "keywords": [
     "nodejs",
