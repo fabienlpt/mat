@@ -5,7 +5,7 @@ COPY ./api .
 
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 3001
 
 # remplacer par npm build ?
 CMD ["node", "index.js"]
