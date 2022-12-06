@@ -7,6 +7,7 @@ RUN npm install
 
 EXPOSE 3000
 
+# remplacer par npm build ?
 CMD ["node", "index.js"]
 
 FROM node:19 AS app
@@ -18,4 +19,5 @@ RUN npm install
 
 EXPOSE 3000
 
+# Remplacer par npm build ?
 CMD ["npm", "start"]

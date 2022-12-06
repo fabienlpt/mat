@@ -28,6 +28,16 @@ const UpdateMaterial: React.FC = () => {
     },[]);
 
     const deleteForm = (id : any) => {
+        fetch(`${config.serverBaseURL}/api/lend/delete`,{
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id: id})
+        }).then(function (response) {
+            console.log(response);
+        }).catch(function (error) {
+            console.log(error);
+        });
+
         fetch(`${config.serverBaseURL}/api/material/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -38,7 +48,6 @@ const UpdateMaterial: React.FC = () => {
         }).catch(function (error) {
             console.log(error);
         });
-        
     };
 
     const updateForm = (id : any) => {

@@ -6,7 +6,6 @@ services:
     container_name: db
     environment:
       MYSQL_DATABASE: 'lend_nws'
-      MYSQL_ROOT_PASSWORD: 'pass'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'pass'
     ports:

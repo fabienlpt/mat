@@ -11,9 +11,9 @@ declare module namespace {
         email: string;
         id: number;
         is_returned: number;
-        lend_date: Date;
+        lend_date: string;
         material_id: number;
-        return_date: Date;
+        return_date: string;
     }
 
     export interface IMaterials {
@@ -35,6 +35,7 @@ const Home: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
+        let material: any = [];
         fetch(`${config.serverBaseURL}/api/material/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -42,7 +43,10 @@ const Home: React.FC = () => {
         .then(response => response.json())
         .then(function (response) {
             console.log(response);
-            setMaterials(response);
+            response.forEach((item: any) => {
+                material.push(item);
+            });
+            setMaterials(material);
         })
         .catch(function (error) {
             console.log(error);
@@ -50,6 +54,7 @@ const Home: React.FC = () => {
     },[]);
 
     useEffect(() => {
+        let lend: any = [];
         fetch(`${config.serverBaseURL}/api/lend/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -57,7 +62,12 @@ const Home: React.FC = () => {
         .then(response => response.json())
         .then(function (response) {
             console.log(response);
-            setLends(response);
+            // foreach response => get item and store it in material
+            response.forEach((item: any) => {
+                lend.push(item);
+            });
+
+            setLends(lend);
         })
         .catch(function (error) {
             console.log(error);
@@ -81,7 +91,7 @@ const Home: React.FC = () => {
     }
 
     const deleteForm = (id : any) => {
-        fetch(`${config.serverBaseURL}server/api/lend/delete`,{
+        fetch(`${config.serverBaseURL}/api/lend/delete`,{
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
@@ -121,7 +131,14 @@ const Home: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* use map on lends */}
+
+
+
                     {lends.map((val : namespace.ILends)=>{
+                        val.lend_date = val.lend_date.split('T')[0];
+                        val.return_date = val.return_date.split('T')[0];
+                        
                         if(val.is_returned === 0){
                             // Store the material name and description where material.id is equal to lend.material_id
                             let materialName = "";
@@ -131,14 +148,19 @@ const Home: React.FC = () => {
                                     materialName = material.name;
                                     materialDescription = material.description;
                                 }
+                                return null ;
                             })
                             return (
                                 <tr key={val.id}>
                                     <td>{materialName}</td>
                                     <td>{materialDescription}</td>
                                     <td>{val.email}</td>
-                                    <td>{val.lend_date}</td>
-                                    <td>{val.return_date}</td>
+                                    <td>
+                                        <input type="date" value={val.lend_date} disabled/>
+                                    </td>
+                                    <td>
+                                        <input type="date" value={val.return_date} disabled/>
+                                    </td>
                                     <td><Button className="mail" onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button></td>
                                     <td>
                                         <Button className="update" onClick={() => navigate(`/lend/${val.material_id}/update`)}>Edit</Button>
@@ -146,6 +168,8 @@ const Home: React.FC = () => {
                                     </td>
                                 </tr>
                             )
+                        } else {
+                            return null;
                         }
                     })}
                 </tbody>

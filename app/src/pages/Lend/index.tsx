@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { config } from "../../config.js";
 
 
-// TODO : Home page is to see all lend of materials which are not returned
+// TODO : Lend page is to see all lends
 
 const Lend: React.FC = () => {
     const [materials, setMaterials] = useState([]);
