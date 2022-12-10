@@ -1,4 +1,5 @@
 // import axios from 'axios';
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
@@ -22,6 +23,12 @@ declare module namespace {
         description: string;
     }
 
+    export interface IStudents {
+        id: number;
+        nom: string;
+        prenom: string;
+        mail: string;
+    }
 }
 
 // TODO : Home page is to see all lend of materials which are not returned
@@ -32,6 +39,7 @@ declare module namespace {
 const Home: React.FC = () => {
     const [materials, setMaterials] = useState([]);
     const [lends, setLends] = useState([]);
+    const [students, setStudents] = useState([]);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -73,6 +81,47 @@ const Home: React.FC = () => {
             console.log(error);
         });
     },[]);
+
+    useEffect(() => {
+        let student: any = [];
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://vps-a47222b1.vps.ovh.net:4242/Student');
+        // get all students with axios.get
+        axios.get(`http://vps-a47222b1.vps.ovh.net:4242/Student`, {data: {headers: headers}})
+        .then(function (response) {
+            console.log(response);
+            response.data.forEach((item: any) => {
+                student.push(item);
+            });
+
+            setStudents(student);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        
+        
+        // fetch(`vps-a47222b1.vps.ovh.net:4242/Student`,{
+        //     method: 'GET',
+        //     headers: { 'Content-Type': 'application/json'},
+        // })
+        // .then(response => response.json())
+        // .then(function (response) {
+        //     console.log(response);
+        //     response.forEach((item: any) => {
+        //         student.push(item);
+        //     });
+
+        //     setStudents(student);
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
+    },[]);
+
 
     // Send mail to the email of lend
     const sendMail = (material_id: number, name: string) => {
@@ -135,7 +184,7 @@ const Home: React.FC = () => {
 
 
 
-                    {lends.map((val : namespace.ILends)=>{
+                    { lends && lends.map((val : namespace.ILends)=>{
                         val.lend_date = val.lend_date.split('T')[0];
                         val.return_date = val.return_date.split('T')[0];
                         
@@ -143,7 +192,7 @@ const Home: React.FC = () => {
                             // Store the material name and description where material.id is equal to lend.material_id
                             let materialName = "";
                             let materialDescription = "";
-                            materials.map((material : namespace.IMaterials)=>{
+                            materials && materials.map((material : namespace.IMaterials)=>{
                                 if(material.id === val.material_id){
                                     materialName = material.name;
                                     materialDescription = material.description;
@@ -174,6 +223,14 @@ const Home: React.FC = () => {
                     })}
                 </tbody>
             </Table>
+            {/* Drop down of all students */}
+            <select>
+                { students && students.map((student : namespace.IStudents)=>{
+                    return (
+                        <option key={student.id} value={student.id}>{student.nom}-{student.prenom}</option>
+                    )
+                })}
+            </select>
         </>
     );
 };

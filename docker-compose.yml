@@ -6,16 +6,16 @@ services:
     container_name: db
     environment:
       MYSQL_DATABASE: 'lend_nws'
-      MYSQL_ROOT_PASSWORD: 'pass'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'pass'
+      MYSQL_ROOT_PASSWORD: 'qwerty'
+      MYSQL_USER: 'debian'
+      MYSQL_PASSWORD: 'qwerty'
     ports:
       - 3306:3306
     volumes:
       - db-data:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
     healthcheck:
-      test: "/usr/bin/mysql --user=user --password=pass --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=debian --password=qwerty --execute \"SHOW DATABASES;\""
       interval: 30s
       timeout: 10s
       retries: 5
