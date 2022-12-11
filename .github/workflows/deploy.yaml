@@ -18,11 +18,3 @@ jobs:
       - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
 
       - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker system prune -a -f"
-  Test-api:
-    name: Test API with docker-compose
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: docker-compose up -d
-      - run: docker exec -it api npm i && npm run test
-      - run: docker-compose down
