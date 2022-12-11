@@ -17,7 +17,7 @@ const NewMaterial: React.FC = () => {
             body: JSON.stringify({name: name, description: description})
         }).then(function (response) {
             console.log(response);
-            navigate('/');
+            navigate(0);
         }).catch(function (error) {
             console.log(error);
         });

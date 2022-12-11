@@ -40,21 +40,21 @@ INSERT INTO `material` (`name`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `lend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `material_id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `lend_date` date NOT NULL,
   `return_date` date NOT NULL,
   `is_returned` boolean NOT NULL DEFAULT false,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `lend` (`material_id`, `email`, `lend_date`, `return_date`, `is_returned`) VALUES
-(1, 'test@gmail.com', '2022-10-01', '2023-10-01', true),
-(2, 'test2@gmail.com', '2022-10-01', '2023-10-01', false),
-(3, 'test3@gmail.com', '2022-10-01', '2023-10-01', false),
-(4, 'test4@gmail.com', '2022-10-01', '2023-10-01', false),
-(5, 'test5@gmail.com', '2022-10-01', '2023-10-01', false),
-(6, 'test6@gmail.com', '2022-10-01', '2023-10-01', false),
-(7, 'test7@gmail.com', '2022-10-01', '2023-10-01', false),
-(8, 'test8@gmail.com', '2022-10-01', '2023-10-01', false),
-(9, 'test9@gmail.com', '2022-10-01', '2023-10-01', false),
-(10, 'test10@gmail.com', '2022-10-01', '2023-10-01', true);
+INSERT INTO `lend` (`material_id`, `user_id`, `lend_date`, `return_date`, `is_returned`) VALUES
+(1, 1, '2022-10-01', '2023-10-01', true),
+(2, 1, '2022-10-01', '2023-10-01', false),
+(3, 2, '2022-10-01', '2023-10-01', false),
+(4, 2, '2022-10-01', '2023-10-01', false),
+(5, 3, '2022-10-01', '2023-10-01', false),
+(6, 4, '2022-10-01', '2023-10-01', false),
+(7, 6, '2022-10-01', '2023-10-01', false),
+(8, 5, '2022-10-01', '2023-10-01', false),
+(9, 7, '2022-10-01', '2023-10-01', false),
+(10, 8, '2022-10-01', '2023-10-01', true);

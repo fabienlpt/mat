@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const user = require('./userController');
 
 // require('dotenv').config({path:__dirname+'../../.env'});
 
@@ -20,19 +21,26 @@ con.connect(function(err) {
 // Create and Save a new lend
 exports.create = async (req, res) => {
     // Validate request
-    if (!(req.body.material_id && req.body.email && req.body.lend_date && req.body.return_date)) {
+    if (!(req.body.material_id && req.body.user_id && req.body.lend_date && req.body.return_date)) {
         return res.status(400).send({
             message: "Tout les champs doivent être remplis"
         });
     }
 
     const material_id = req.body.material_id;
-    const email = req.body.email;
+    const user_id = req.body.user_id;
     const lend_date = new Date(req.body.lend_date);
     const return_date = new Date(req.body.return_date);
+    // get mail from user_id with get by id in userController
+    const request = {
+        params: {
+            id: user_id
+        }
+    }
+    const email = await user.readone(request, res);
 
     const sql= 'SELECT name FROM material WHERE id = ?';
-    const sql2 = 'INSERT INTO lend (material_id, email, lend_date, return_date) VALUES (?,?,?,?)';
+    const sql2 = 'INSERT INTO lend (material_id, user_id, lend_date, return_date) VALUES (?,?,?,?)';
 
     const result = await con.promise().query(sql, [material_id]);
 
@@ -70,7 +78,7 @@ exports.create = async (req, res) => {
         }
     });
 
-    con.query(sql2, [material_id, email, lend_date, return_date], (err, result) => {
+    con.query(sql2, [material_id, user_id, lend_date, return_date], (err, result) => {
             if (err) {
                 res.send(err);
             } else {
@@ -108,20 +116,20 @@ exports.readone = (req, res) => {
 // Update a lend identified by the id in the request
 exports.update = (req, res) => {
     // Validate Request
-    if (!(req.body.material_id || req.body.lend_date || req.body.email || req.body.return_date || req.body.is_returned)) {
+    if (!(req.body.material_id || req.body.lend_date || req.body.user_id || req.body.return_date || req.body.is_returned)) {
         return res.status(400).send({
             message: "Lend content can not be empty"
         });
     }
     const id = req.body.id;
-    const email = req.body.email;
+    const user_id = req.body.user_id;
     const lend_date = new Date(req.body.lend_date);
     const return_date = new Date(req.body.return_date);
     const is_returned = req.body.is_returned;
 
     con.query(
-        'UPDATE lend SET email = ?, lend_date = ?, return_date = ? , is_returned = ? WHERE id = ?',
-        [email, lend_date, return_date, is_returned, id],
+        'UPDATE lend SET user_id = ?, lend_date = ?, return_date = ? , is_returned = ? WHERE id = ?',
+        [user_id, lend_date, return_date, is_returned, id],
         (err, result) => {
             if (err) {
                 res.send(err);
@@ -154,9 +162,16 @@ exports.sendmail = async (req, res) => {
     const sql = "SELECT * FROM lend WHERE material_id = ?";
     const result = await con.promise().query(sql, [material_id]);
 
-    const email = result[0][0].email;
+    const user_id = result[0][0].user_id;
     const lend_date = result[0][0].lend_date;
     const return_date = result[0][0].return_date;
+    
+    const request = {
+        params: {
+            id: user_id
+        }
+    }
+    const email = await user.readone(request, res);
             
     var transport = nodemailer.createTransport({
         host: "smtp.gmail.com",

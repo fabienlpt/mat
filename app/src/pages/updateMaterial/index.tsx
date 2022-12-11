@@ -44,7 +44,7 @@ const UpdateMaterial: React.FC = () => {
             body: JSON.stringify({id: id})
         }).then(function (response) {
             console.log(response);
-            navigate('/');
+            navigate(-1);
         }).catch(function (error) {
             console.log(error);
         });

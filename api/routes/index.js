@@ -36,4 +36,12 @@ module.exports = (app) => {
     // Send a mail
     app.post('/api/sendMail', lends.sendmail);
 
+    const users = require('../controller/userController.js');
+
+    // Get all users
+    app.get('/api/user/get', users.read);
+
+    // Get one user by id
+    app.get('/api/user/get/:id', users.readone);
+
 }

@@ -1,14 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { config } from "../../config.js";
 import styled from 'styled-components';
 
+declare module namespace {
+    export interface IStudents {
+        id: number;
+        nom: string;
+        prenom: string;
+        mail: string;
+    }
+}
+
 const NewLend: React.FC = () => {
     let material_id = useParams()["id"];
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
+    const [user_id, setUserId] = useState('');
     const [lend_date, setLendDate] = useState('');
     const [return_date, setReturnDate] = useState('');
+    const [students, setStudents] = useState([]);
+
+    useEffect(() => {
+        fetch(`${config.serverBaseURL}/api/user/get`,{
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(function (response) {
+            setStudents(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    },[]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -16,7 +40,7 @@ const NewLend: React.FC = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                email: email,
+                user_id: user_id,
                 lend_date: lend_date,
                 return_date: return_date,
                 material_id: material_id
@@ -35,7 +59,13 @@ const NewLend: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     Email:
-                    <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
+                    <select value={user_id} onChange={e => setUserId(e.target.value)}>
+                        { students && students.map((student : namespace.IStudents)=>{
+                            return (
+                                <option key={student.id} value={student.id}>{student.mail}</option>
+                            )
+                        })}
+                    </select>
                 </label>
                 <label>
                     Lend Date:

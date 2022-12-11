@@ -50,7 +50,6 @@ const Home: React.FC = () => {
         })
         .then(response => response.json())
         .then(function (response) {
-            console.log(response);
             response.forEach((item: any) => {
                 material.push(item);
             });
@@ -67,14 +66,27 @@ const Home: React.FC = () => {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
-        .then(response => response.json())
-        .then(function (response) {
-            console.log(response);
-            // foreach response => get item and store it in material
-            response.forEach((item: any) => {
-                lend.push(item);
+        .then((response) => response.json())
+        .then((data) => {
+            data.forEach( async (item: any) => {
+                let user_id = item.user_id;
+                let student : any = fetch(`${config.serverBaseURL}/api/user/get/${user_id}`,{
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    return response.data;
+                }) 
+                .catch(function (error) {
+                    console.log(error);
+                });
+                // TODO: update this part because it's not working really well
+                student.then(async (data : any) => {
+                    item.email = data[0].mail;
+                    lend.push(item);
+                });
             });
-
             setLends(lend);
         })
         .catch(function (error) {
@@ -83,43 +95,17 @@ const Home: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        let student: any = [];
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://vps-a47222b1.vps.ovh.net:4242/Student');
-        // get all students with axios.get
-        axios.get(`http://vps-a47222b1.vps.ovh.net:4242/Student`, {data: {headers: headers}})
+        fetch(`${config.serverBaseURL}/api/user/get`,{
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
         .then(function (response) {
-            console.log(response);
-            response.data.forEach((item: any) => {
-                student.push(item);
-            });
-
-            setStudents(student);
+            setStudents(response.data);
         })
         .catch(function (error) {
             console.log(error);
         });
-
-        
-        
-        // fetch(`vps-a47222b1.vps.ovh.net:4242/Student`,{
-        //     method: 'GET',
-        //     headers: { 'Content-Type': 'application/json'},
-        // })
-        // .then(response => response.json())
-        // .then(function (response) {
-        //     console.log(response);
-        //     response.forEach((item: any) => {
-        //         student.push(item);
-        //     });
-
-        //     setStudents(student);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
     },[]);
 
 

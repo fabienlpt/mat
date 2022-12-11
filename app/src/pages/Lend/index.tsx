@@ -65,6 +65,7 @@ const Lend: React.FC = () => {
         .then(response => response.json())
         .then(function (response) {
             console.log(response);
+            navigate('/lend');
         })
         .catch(function (error) {
             console.log(error);
