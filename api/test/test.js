@@ -1,5 +1,5 @@
-const request = require('supertest');
 const app = require('../index.js');
+const request = require('supertest').agent(app.listen());
 
 // ------------------- MATERIAL -------------------
 
