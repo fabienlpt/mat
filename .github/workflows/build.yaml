@@ -1,20 +1,15 @@
 on: [push]
 
-name: Build image & Test
-
 jobs:
-  Test-api:
-    name: Testing my api
+  Test_code:
     runs-on: ubuntu-latest
     steps:
-        uses: actions/checkout@v3
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 18
-      - name: Install dependencies
-        run: cd api && npm install
-      - name: Run tests
-        run: npm run test test/test.js
+          node-version: latest
+      - run: cd api && npm install
+      - run: npm run test test/test.js
 
     # steps:
     #   - name: Checkout
@@ -26,7 +21,6 @@ jobs:
     #       docker-compose exec mat-api npm run test test/test.js
     #   - name: Stop docker-compose
     #     run: docker-compose down
-
   build-docker:
     runs-on: ubuntu-latest
     steps:
