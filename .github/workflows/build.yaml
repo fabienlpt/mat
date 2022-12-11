@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-    Test-api:
+  Test-api:
     name: Test API with docker-compose
     runs-on: ubuntu-latest
     steps:
