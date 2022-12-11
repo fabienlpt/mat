@@ -1,12 +1,15 @@
-const app = require('../index.js');
-const request = require('supertest').agent(app.listen());
+const api = require('../index.js');
+const request = require('supertest');
+
+// define port for tests
+
 
 // ------------------- MATERIAL -------------------
 
 // Test bien ajouté en bdd (n=n+1)
 describe('POST /api/material/create', function () {
     it('respond with 200 created', function (done) {
-        request(app)
+        request(api)
             .post('/api/material/create')
             .send({
                 "name": "test",
@@ -20,7 +23,7 @@ describe('POST /api/material/create', function () {
 
 describe('GET /api/material/get', () => {
     it('respond with json containing a list of all materials', function (done) {
-        request(app)
+        request(api)
             .get('/api/material/get')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -30,7 +33,7 @@ describe('GET /api/material/get', () => {
 
 describe('GET /api/material/get/:id', () => {
     it('respond with json containing a single material', function (done) {
-        request(app)
+        request(api)
             .get('/api/material/get/1')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -40,7 +43,7 @@ describe('GET /api/material/get/:id', () => {
 
 describe('PUT /api/material/update', () => {
     it('respond with 200 updated', function (done) {
-        request(app)
+        request(api)
             .put('/api/material/update')
             .send({
                 "id": 1,
@@ -55,7 +58,7 @@ describe('PUT /api/material/update', () => {
 
 describe('DELETE /api/material/delete', () => {
     it('respond with 200 deleted', function (done) {
-        request(app)
+        request(api)
             .delete('/api/material/delete')
             .send({
                 "id": 1,
@@ -70,7 +73,7 @@ describe('DELETE /api/material/delete', () => {
 
 describe('POST /api/lend/create', function (done) {
     it('respond with 200 created', function () {
-        request(app)
+        request(api)
             .post('/api/lend/create')
             .send({
                 "material_id": 1,
@@ -87,7 +90,7 @@ describe('POST /api/lend/create', function (done) {
 
 describe('GET /api/lend/get', () => {
     it('respond with json containing a list of all lends', function (done) {
-        request(app)
+        request(api)
             .get('/api/lend/get')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -97,7 +100,7 @@ describe('GET /api/lend/get', () => {
 
 describe('GET /api/lend/get/:id', () => {
     it('respond with json containing a single lend', function (done) {
-        request(app)
+        request(api)
             .get('/api/lend/get/1')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -107,7 +110,7 @@ describe('GET /api/lend/get/:id', () => {
 
 describe('PUT /api/lend/update', () => {
     it('respond with 200 updated', function (done) {
-        request(app)
+        request(api)
             .put('/api/lend/update')
             .send({
                 "id": 1,
@@ -125,7 +128,7 @@ describe('PUT /api/lend/update', () => {
 
 describe('DELETE /api/lend/delete', () => {
     it('respond with 200 deleted', function (done) {
-        request(app)
+        request(api)
             .delete('/api/lend/delete')
             .send({
                 "id": 1,
@@ -138,7 +141,7 @@ describe('DELETE /api/lend/delete', () => {
 
 describe('POST /api/sendmail', function (done) {
     it('respond with 200 created', function () {
-        request(app)
+        request(api)
             .post('/api/sendmail')
             .send({
                 "name": "test",
