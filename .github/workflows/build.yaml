@@ -8,8 +8,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: cd api && npm i
-      - run: cd api && npm run test test/test.js
+      - run: cd api && npm i && npm run test
+      # - run: cd api && npm run test
 
     # steps:
     #   - name: Checkout
