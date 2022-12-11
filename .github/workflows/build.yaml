@@ -9,7 +9,7 @@ jobs:
         with:
           node-version: 18
       - run: cd api && npm i
-      - run: npm run test test/test.js
+      - run: cd api && npm run test test/test.js
 
     # steps:
     #   - name: Checkout
