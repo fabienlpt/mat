@@ -1,6 +1,7 @@
 on: [push]
 
 jobs:
+
   Test-api:
     name: Test API with docker-compose
     runs-on: ubuntu-latest
@@ -10,8 +11,8 @@ jobs:
       - run: docker exec api npm run test
       - run: docker-compose down
 
-
   build-docker:
+    needs: Test-api
     runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub Container Registry
