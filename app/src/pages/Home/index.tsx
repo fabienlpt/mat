@@ -130,23 +130,20 @@ const Home: React.FC = () => {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
-        }).then(function (response) {
-            console.log(response);
+        }).then(() => {
+            fetch(`${config.serverBaseURL}/api/material/delete`,{
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({id: id})
+            }).then(function (response) {
+                console.log(response);
+                navigate('/');
+            }).catch(function (error) {
+                console.log(error);
+            });
         }).catch(function (error) {
             console.log(error);
-        });
-
-        fetch(`${config.serverBaseURL}/api/material/delete`,{
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id: id})
-        }).then(function (response) {
-            console.log(response);
-            navigate('/');
-        }).catch(function (error) {
-            console.log(error);
-        });
-        
+        });        
     };
 
 
