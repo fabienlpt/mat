@@ -1,16 +1,8 @@
-on: [push]
+on: 
+  pull_request:
+    branches: [ release ]
 
 jobs:
-
-  Test-api:
-    name: Test API with docker-compose
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: docker-compose up -d
-      - run: docker exec api npm run test
-      - run: docker-compose down
-
   build-docker:
     needs: Test-api
     runs-on: ubuntu-latest
@@ -35,4 +27,22 @@ jobs:
           push: true
           tags: ghcr.io/fabienlpt/app:latest
           target: app
-
+  # Pull-request:
+  #   needs: build-docker
+  #   name: Make pull request on master branch
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: release
+  #     - name: Create Pull Request
+  #       uses: peter-evans/create-pull-request@v3
+  #       with:
+  #         base: master
+  #         branch: release
+  #         commit-message: Test
+  #         title: Test
+  #         body: Test
+  #         labels: |
+  #           test

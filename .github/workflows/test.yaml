@@ -1,0 +1,32 @@
+on: [push]
+
+jobs:
+  Test-api:
+    name: Test API with docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker-compose up -d
+      - run: docker exec api npm run test
+      - run: docker-compose down
+  Pull-request:
+    needs: Test-api
+    name: Make pull request on release branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: release
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          base: release
+          branch: dev
+          commit-message: Make Tests
+          title: Test
+          body: Test
+          delete-branch: false
+          labels: |
+            test
+          
