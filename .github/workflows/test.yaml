@@ -11,22 +11,21 @@ jobs:
       - run: docker-compose down
   Pull-request:
     needs: Test-api
-    name: Make pull request on release branch
+    name: Make pull request from dev to release branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: release
+          ref: dev
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           base: release
           branch: dev
-          commit-message: Make Tests
+          commit-message: Test
           title: Test
           body: Test
-          delete-branch: false
           labels: |
             test
-          
+        
