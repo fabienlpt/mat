@@ -85,6 +85,33 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    h1 {
+        margin: 0;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+    }
+
+    input {
+        margin: 10px;
+    }
+
+    button {
+        margin: 10px;
+    }
+
+    select {
+        margin: 10px;
+    }
 `;
 
 export default NewLend;

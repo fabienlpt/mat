@@ -209,14 +209,6 @@ const Home: React.FC = () => {
                     })}
                 </tbody>
             </Table>
-            {/* Drop down of all students */}
-            <select>
-                { students && students.map((student : namespace.IStudents)=>{
-                    return (
-                        <option key={student.id} value={student.id}>{student.nom}-{student.prenom}</option>
-                    )
-                })}
-            </select>
         </>
     );
 };
