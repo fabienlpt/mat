@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import axios from 'axios';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
@@ -43,72 +44,84 @@ const Home: React.FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        let material: any = [];
-        fetch(`${config.serverBaseURL}/api/material/get`,{
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-        .then(function (response) {
-            response.forEach((item: any) => {
-                material.push(item);
-            });
-            setMaterials(material);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    },[]);
-
-    useEffect(() => {
-        let lend: any = [];
-        fetch(`${config.serverBaseURL}/api/lend/get`,{
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            data.forEach( async (item: any) => {
-                let user_id = item.user_id;
-                let student : any = fetch(`${config.serverBaseURL}/api/user/get/${user_id}`,{
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                })
-                .then((response) => response.json())
-                .then((response) => {
-                    return response.data;
-                }) 
-                .catch(function (error) {
-                    console.log(error);
+        const getMaterials = () => {
+            let material: any = [];
+            fetch(`${config.serverBaseURL}/api/material/get`,{
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(response => response.json())
+            .then(function (response) {
+                response.forEach((item: any) => {
+                    material.push(item);
                 });
-                // TODO: update this part because it's not working really well
-                student.then(async (data : any) => {
-                    item.email = data[0].mail;
+                setMaterials(material);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+
+        const getLends = () => {
+            let lend: any = [];
+            fetch(`${config.serverBaseURL}/api/lend/get`,{
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                response.forEach((item: any) => {
                     lend.push(item);
+                });
+                setLends(lend);
+                updateLends();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+
+        const getStudents = () => {
+            let student: any = [];
+            fetch(`${config.serverBaseURL}/api/user/get`,{
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(response => response.json())
+            .then(function (response) {
+                response.data.forEach((item: any) => {
+                    student.push(item);
+                });
+                setStudents(student);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+
+        const updateLends = () => {
+            let lend: any = [];
+            console.log(materials);
+            console.log(lends);
+            getStudents();
+            console.log(students);
+            lends.forEach((item: any) => {
+                students.forEach((student: any) => {
+                    if (item.user_id === student.id) {
+                        item.email = student.mail;
+                        lend.push(item);
+                    }
                 });
             });
             setLends(lend);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    },[]);
+        }
 
-    useEffect(() => {
-        fetch(`${config.serverBaseURL}/api/user/get`,{
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-        .then(function (response) {
-            setStudents(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    },[]);
+        getMaterials();
+        getLends();
 
+    }, []);
 
+    
     // Send mail to the email of lend
     const sendMail = (material_id: number, name: string) => {
         fetch(`${config.serverBaseURL}api/sendMail`,{
