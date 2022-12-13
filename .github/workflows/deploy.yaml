@@ -1,8 +1,11 @@
 name: Deploy
 
 on:
-  pull_request:
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Build"]
+    branches: [dev]
+    types:
+      - completed
 
 jobs:
   deploy:
