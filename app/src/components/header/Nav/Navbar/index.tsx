@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
 				<ItemLink link="/material" title="Materials"/>
 			</ListItem>
 			<ListItem className="nav-link">
-				<ItemLink link="/lend" title="Réservations"/>
+				<ItemLink link="/lend" title="Réservations owo"/>
 			</ListItem>
 			<ListItem className="nav-link">
 				<ItemLink link="/" title="Settings"/>
