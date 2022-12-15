@@ -15,7 +15,8 @@ declare module namespace {
 const NewLend: React.FC = () => {
     let material_id = useParams()["id"];
     const navigate = useNavigate();
-    const [user_id, setUserId] = useState('');
+    const [user_id, setUserId] = useState(null);
+    const [email, setEmail] = useState('');
     const [lend_date, setLendDate] = useState('');
     const [return_date, setReturnDate] = useState('');
     const [students, setStudents] = useState([]);
@@ -28,6 +29,8 @@ const NewLend: React.FC = () => {
         .then(response => response.json())
         .then(function (response) {
             setStudents(response.data);
+            setUserId(response.data[0].id);
+            setEmail(response.data[0].mail);
         })
         .catch(function (error) {
             console.log(error);
@@ -40,6 +43,7 @@ const NewLend: React.FC = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                email: email,
                 user_id: user_id,
                 lend_date: lend_date,
                 return_date: return_date,
@@ -53,18 +57,27 @@ const NewLend: React.FC = () => {
         });
     };
 
+    const handleChange = (e: any) => {
+        console.log(e.target.value);
+        setUserId(e.target.value);
+        // set email from user_id
+        students.forEach((student : namespace.IStudents) => {
+            if (student.id == user_id) {
+                setEmail(student.mail);
+            }
+        });
+    }
     return (
         <Container>
             <h1>New Lend</h1>
             <form onSubmit={handleSubmit}>
                 <label>
                     Email:
-                    <select value={user_id} onChange={e => setUserId(e.target.value)}>
-                        { students && students.map((student : namespace.IStudents)=>{
-                            return (
-                                <option key={student.id} value={student.id}>{student.mail}</option>
-                            )
-                        })}
+                    {/* map on students and setUserId on change option */}
+                    <select onChange={e => handleChange(e)}>
+                        {students.map((student : namespace.IStudents) => (
+                            <option value={student.id}>{student.mail}</option>
+                        ))}
                     </select>
                 </label>
                 <label>

@@ -4,12 +4,35 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import { config } from "../../config.js";
 
+declare module namespace {
 
-// TODO : Lend page is to see all lends
+    export interface ILends {
+        user_id: number;
+        id: number;
+        is_returned: number;
+        lend_date: string;
+        material_id: number;
+        return_date: string;
+    }
+
+    export interface IMaterials {
+        id: number;
+        name: string;
+        description: string;
+    }
+
+    export interface IStudents {
+        id: number;
+        nom: string;
+        prenom: string;
+        mail: string;
+    }
+}
 
 const Lend: React.FC = () => {
     const [materials, setMaterials] = useState([]);
     const [lends, setLends] = useState([]);
+    const [students, setStudents] = useState([]);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -40,12 +63,26 @@ const Lend: React.FC = () => {
         });
     },[]);
 
+    useEffect(() => {
+        fetch(`${config.serverBaseURL}/api/user/get`,{
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(function (response) {
+            setStudents(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    },[]);
+
     // Send mail to the email of lend
-    const sendMail = (material_id: number, name: string) => {
+    const sendMail = (material_id: number, name: string, email: string) => {
         fetch(`${config.serverBaseURL}/api/sendMail`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ material_id: material_id, name: name })
+            body: JSON.stringify({ material_id: material_id, name: name, email: email})
         })
         .then(response => response.json())
         .then(function (response) {
@@ -65,7 +102,7 @@ const Lend: React.FC = () => {
         .then(response => response.json())
         .then(function (response) {
             console.log(response);
-            navigate('/lend');
+            navigate('');
         })
         .catch(function (error) {
             console.log(error);
@@ -92,28 +129,34 @@ const Lend: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {lends.map((val : any)=>{
+                    {lends.map((val : namespace.ILends)=>{
                         // Store the material name and description where material.id is equal to lend.material_id
                         let materialName = "";
                         let materialDescription = "";
-                        materials.map((material : any)=>{
+                        let studentEmail = "";
+                        materials.map((material : namespace.IMaterials)=>{
                             if(material.id === val.material_id){
                                 materialName = material.name;
                                 materialDescription = material.description;
+                            }
+                        })
+                        students.map((student : namespace.IStudents)=>{
+                            if(student.id === val.user_id){
+                                studentEmail = student.mail;
                             }
                         })
                         return (
                             <tr key={val.id}>
                                 <td>{materialName}</td>
                                 <td>{materialDescription}</td>
-                                <td>{val.email}</td>
+                                <td>{studentEmail}</td>
                                 <td>{val.lend_date}</td>
                                 <td>{val.return_date}</td>
                                 <td>{val.is_returned ? "Returned" : "Not returned"}</td>
                                 <td>
                                     {val.is_returned === 0 ? (
                                         <>
-                                            <Button className="mail" onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button>
+                                            <Button className="mail" onClick={() => sendMail(val.material_id, materialName, studentEmail)}>Send Mail</Button>
                                         </>
                                     ) : (
                                         <></>

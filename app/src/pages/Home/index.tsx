@@ -9,7 +9,7 @@ import { config } from "../../config.js";
 declare module namespace {
 
     export interface ILends {
-        email: string;
+        user_id: number;
         id: number;
         is_returned: number;
         lend_date: string;
@@ -30,8 +30,6 @@ declare module namespace {
         mail: string;
     }
 }
-
-// TODO : Home page is to see all lend of materials which are not returned
 // TODO : modification juste materiel / pareil pour emprunt
 // TODO : Quantité
 // TODO : suppression des emprunts lié au materiel
@@ -61,33 +59,13 @@ const Home: React.FC = () => {
     },[]);
 
     useEffect(() => {
-        let lend: any = [];
         fetch(`${config.serverBaseURL}/api/lend/get`,{
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
         .then((response) => response.json())
         .then((data) => {
-            data.forEach( async (item: any) => {
-                let user_id = item.user_id;
-                let student : any = fetch(`${config.serverBaseURL}/api/user/get/${user_id}`,{
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                })
-                .then((response) => response.json())
-                .then((response) => {
-                    return response.data;
-                }) 
-                .catch(function (error) {
-                    console.log(error);
-                });
-                // TODO: update this part because it's not working really well
-                student.then(async (data : any) => {
-                    item.email = data[0].mail;
-                    lend.push(item);
-                });
-            });
-            setLends(lend);
+            setLends(data);
         })
         .catch(function (error) {
             console.log(error);
@@ -110,11 +88,11 @@ const Home: React.FC = () => {
 
 
     // Send mail to the email of lend
-    const sendMail = (material_id: number, name: string) => {
+    const sendMail = (material_id: number, name: string, email: string) => {
         fetch(`${config.serverBaseURL}api/sendMail`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ material_id: material_id, name: name })
+            body: JSON.stringify({ material_id: material_id, name: name, email: email})
         })
         .then(response => response.json())
         .then(function (response) {
@@ -130,18 +108,13 @@ const Home: React.FC = () => {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id: id})
-        }).then(() => {
-            fetch(`${config.serverBaseURL}/api/material/delete`,{
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({id: id})
-            }).then(function (response) {
-                console.log(response);
-                navigate('/');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }).catch(function (error) {
+        })
+        .then(response => response.json())
+        .then(function (response) {
+            console.log(response);
+            navigate('/');
+        })
+        .catch(function (error) {
             console.log(error);
         });        
     };
@@ -175,6 +148,7 @@ const Home: React.FC = () => {
                             // Store the material name and description where material.id is equal to lend.material_id
                             let materialName = "";
                             let materialDescription = "";
+                            let userEmail = "";
                             materials && materials.map((material : namespace.IMaterials)=>{
                                 if(material.id === val.material_id){
                                     materialName = material.name;
@@ -182,18 +156,25 @@ const Home: React.FC = () => {
                                 }
                                 return null ;
                             })
+                            students && students.map((student : namespace.IStudents)=>{
+                                if(student.id === val.user_id){
+                                    userEmail = student.mail;
+                                }
+                                return null ;
+                            })
+
                             return (
                                 <tr key={val.id}>
                                     <td>{materialName}</td>
                                     <td>{materialDescription}</td>
-                                    <td>{val.email}</td>
+                                    <td>{userEmail}</td>
                                     <td>
                                         <input type="date" value={val.lend_date} disabled/>
                                     </td>
                                     <td>
                                         <input type="date" value={val.return_date} disabled/>
                                     </td>
-                                    <td><Button className="mail" onClick={() => sendMail(val.material_id, materialName)}>Send Mail</Button></td>
+                                    <td><Button className="mail" onClick={() => sendMail(val.material_id, materialName, userEmail)}>Send Mail</Button></td>
                                     <td>
                                         <Button className="update" onClick={() => navigate(`/lend/${val.material_id}/update`)}>Edit</Button>
                                         <Button className="delete" onClick={() => deleteForm(val.material_id)}>Delete</Button>

@@ -31,13 +31,7 @@ exports.create = async (req, res) => {
     const user_id = req.body.user_id;
     const lend_date = new Date(req.body.lend_date);
     const return_date = new Date(req.body.return_date);
-    // get mail from user_id with get by id in userController
-    const request = {
-        params: {
-            id: user_id
-        }
-    }
-    const email = await user.readone(request, res);
+    const email = req.body.email;
 
     const sql= 'SELECT name FROM material WHERE id = ?';
     const sql2 = 'INSERT INTO lend (material_id, user_id, lend_date, return_date) VALUES (?,?,?,?)';
@@ -90,11 +84,13 @@ exports.create = async (req, res) => {
 
 // Retrieve and return all lend from the database.
 exports.read = (req, res) => {
+    let lends = [];
     con.query('SELECT * FROM lend',(err, result) => {
         if (err) {
             res.send(err);
         } else {
-            res.send(result)
+            lends = result;
+            res.send(lends);
         }
     })
 }
@@ -107,7 +103,17 @@ exports.readone = (req, res) => {
             if (error) {
                 res.send(error)
             } else {
-                res.send(results)
+                const request = {
+                    params: {
+                        id: results[0].user_id
+                    }
+                }
+                // get mail from user_id with get by id in userController and add it to email in result
+                user.readone(request, res).then(email => {
+                    results[0].email = email;
+                }
+                );
+                res.send(results);
             }
         }
     )
@@ -158,6 +164,7 @@ exports.delete = (req, res) => {
 exports.sendmail = async (req, res) => {
     const material_id = req.body.material_id;
     const name = req.body.name;
+    const email = req.body.email;
 
     const sql = "SELECT * FROM lend WHERE material_id = ?";
     const result = await con.promise().query(sql, [material_id]);
@@ -166,13 +173,6 @@ exports.sendmail = async (req, res) => {
     const lend_date = result[0][0].lend_date;
     const return_date = result[0][0].return_date;
     
-    const request = {
-        params: {
-            id: user_id
-        }
-    }
-    const email = await user.readone(request, res);
-            
     var transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,

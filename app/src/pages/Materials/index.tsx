@@ -57,7 +57,7 @@ const Material: React.FC = () => {
             body: JSON.stringify({id: id})
         }).then(function (response) {
             console.log(response);
-            navigate('/materials');
+            navigate('');
         }).catch(function (error) {
             console.log(error);
         });
